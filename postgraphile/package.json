@@ -1,0 +1,16 @@
+{
+  "name": "postgraphile-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postgraphile": "^4.10.0",
+    "graphql": "14.7.0"
+  }
+}

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgraphile
+spec:
+  ports:
+  - port: 4000
+    nodePort: 32100
+  type: NodePort
+  selector:
+    app: postgraphile
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgraphile
+spec:
+  selector:
+    matchLabels:
+      app: postgraphile
+  template:
+    metadata:
+      labels:
+        app: postgraphile
+    spec:
+      containers:
+      - name: postgraphile
+        image: postgraphile
+        env:
+          - name : DATABASE_URL
+            value: "postgres://postgres:postgres@messages-db"
+          - name : JWT_SECRET
+            value: "superSecretKey"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 4000
+
