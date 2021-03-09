@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
-import "antd/dist/antd.less";
+import "./main.less";
 
 ReactDOM.render(
   <React.StrictMode>
