@@ -36,12 +36,12 @@ create function app_public.current_user_id() returns uuid as $$
   select nullif(current_setting('jwt.claims.user_id', true), '')::uuid
 $$ language sql stable;
 
--- create function app_public.current_user() returns app_public.users as $$
---   select *
---   from app_public.users
---   where id = app_public.current_user_id()
--- $$ language sql stable;
--- comment on function app_public.current_user() is 'Gets the user who was identified by our JWT.';
+create function app_public.current_user() returns app_public.users as $$
+  select *
+  from app_public.users
+  where id = app_public.current_user_id()
+$$ language sql stable;
+comment on function app_public.current_user() is 'Gets the user who was identified by our JWT.';
 
 CREATE FUNCTION app_public.send_message(
   receiver uuid,
@@ -57,6 +57,7 @@ $$ LANGUAGE sql STRICT VOLATILE;
 grant usage on schema app_public to app_anonymous, app_user;
 
 grant execute on function app_public.current_user_id to app_user;
+grant execute on function app_public.current_user to app_user;
 grant execute on function app_public.send_message to app_user;
 
 grant select, insert on table app_public.messages to app_user;
