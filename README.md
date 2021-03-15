@@ -23,6 +23,14 @@ then ...
 
     skaffold dev
 
+#### issues
+
+dns issues between services after each reboot. microk8s inspect show presence of iptables-legacy rules that seems created by ... microk8s.
+```
+sudo iptables -P FORWARD ACCEPT
+sudo apt-get install iptables-persistent # doesn't resolve anything
+```
+
 ## TODO
 
 - [ ] migrate db test from pgTap to jest
