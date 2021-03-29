@@ -54,11 +54,11 @@ describe("DB : main", () => {
 
     expect(rowCount).toBe(1);
     expect(allMessages[0]["sender"]).toBe(ALICE_ID);
-    expect(allMessages[0]["receiver"]).toBe(BOB_ID);
+    expect(allMessages[0]["recipient"]).toBe(BOB_ID);
 
     expect(
       client.query(
-        `INSERT INTO app_public.messages (title,content,sender,receiver)
+        `INSERT INTO app_public.messages (title,content,sender,recipient)
             VALUES ( 'declaration' , 'Alice is the best' , $1::uuid , $2::uuid )`,
         [BOB_ID, CHARLIE_ID]
       )

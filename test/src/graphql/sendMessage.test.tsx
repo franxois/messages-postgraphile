@@ -57,7 +57,7 @@ describe("Should send message", () => {
         mutation {
           sendMessage(
             input: {
-              receiver: "${bobId}"
+              recipient: "${bobId}"
               title: "title of the message"
               content: "content of the message"
             }

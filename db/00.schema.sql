@@ -29,7 +29,7 @@ CREATE TABLE app_public.messages (
       CHECK(length(content) > 0 AND length(content) < 1024),
     created_at timestamptz not null default now(),
     sender uuid not null REFERENCES app_public.users,
-    receiver uuid not null REFERENCES app_public.users
+    recipient uuid not null REFERENCES app_public.users
 );
 
 create function app_public.current_user_id() returns uuid as $$
@@ -44,13 +44,13 @@ $$ language sql stable;
 comment on function app_public.current_user() is 'Gets the user who was identified by our JWT.';
 
 CREATE FUNCTION app_public.send_message(
-  receiver uuid,
+  recipient uuid,
   title text,
   content text)
 RETURNS SETOF app_public.messages
 AS $$
-  INSERT INTO app_public.messages (sender, receiver, title , content)
-    VALUES ( app_public.current_user_id() , receiver , title , content )
+  INSERT INTO app_public.messages (sender, recipient, title , content)
+    VALUES ( app_public.current_user_id() , recipient , title , content )
     RETURNING *;
 $$ LANGUAGE sql STRICT VOLATILE;
 
@@ -63,7 +63,7 @@ grant execute on function app_public.send_message to app_user;
 grant select, insert on table app_public.messages to app_user;
 
 alter table app_public.messages enable row level security;
-create policy select_message on app_public.messages for select using ( sender = app_public.current_user_id() OR receiver = app_public.current_user_id()  );
+create policy select_message on app_public.messages for select using ( sender = app_public.current_user_id() OR recipient = app_public.current_user_id()  );
 create policy create_message on app_public.messages for insert with check ( sender = app_public.current_user_id() );
 
 grant select on table app_public.users to app_user;
