@@ -32,7 +32,6 @@ export const UserSelector = () => {
   return (
     <Select<string>
       placeholder="Please select user"
-      showSearch
       value={selectedUser}
       style={{ width: 200 }}
       onChange={(value) => {

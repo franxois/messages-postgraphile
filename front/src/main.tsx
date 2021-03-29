@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { MyApolloProvider } from "./context/MyApolloProvider";
 import { UserProvider } from "./context/User";
 
 import "./index.css";
@@ -8,18 +8,13 @@ import App from "./App";
 
 import "./main.less";
 
-const client = new ApolloClient({
-  uri: "/graphql",
-  cache: new InMemoryCache(),
-});
-
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <UserProvider>
+    <UserProvider>
+      <MyApolloProvider>
         <App />
-      </UserProvider>
-    </ApolloProvider>
+      </MyApolloProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

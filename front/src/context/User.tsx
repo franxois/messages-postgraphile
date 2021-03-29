@@ -9,7 +9,7 @@ type State =
   | {}
   | {
       username: string;
-      JWT: string;
+      jwt: string;
     };
 
 type Action = {
