@@ -29,7 +29,7 @@ export const Composer: React.FC<{ recipient: string }> = ({ recipient }) => {
   const { TextArea } = Input;
 
   return (
-    <Row justify="space-around" align="middle">
+    <Row justify="space-around" align="middle" className={styles.main}>
       <Col span={20}>
         <TextArea
           value={content}

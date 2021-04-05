@@ -46,10 +46,12 @@ function App() {
           <Header>
             <UserSelector />
           </Header>
-          <Content>
-            <Discussions />
-            <Composer recipient={state.recipient} />
-          </Content>
+          {state.recipient && (
+            <Content>
+              <Discussions id={state.recipient} />
+              <Composer recipient={state.recipient} />
+            </Content>
+          )}
         </Layout>
       </Layout>{" "}
     </div>

@@ -28,4 +28,4 @@ begin
 end;
 $$ language plpgsql strict security definer;
 
-grant execute on function app_public.authenticate to app_anonymous;
+grant execute on function app_public.authenticate to app_anonymous, app_user;

@@ -54,11 +54,23 @@ AS $$
     RETURNING *;
 $$ LANGUAGE sql STRICT VOLATILE;
 
+CREATE FUNCTION app_public.messages_with(friend_id uuid)
+RETURNS setof app_public.messages
+AS $$
+  SELECT *
+  FROM app_public.messages
+  WHERE
+    ( sender = friend_id AND recipient = app_public.current_user_id() ) OR
+    ( recipient = friend_id AND sender = app_public.current_user_id() )
+  ORDER BY created_at DESC
+$$ LANGUAGE sql STABLE;
+
 grant usage on schema app_public to app_anonymous, app_user;
 
 grant execute on function app_public.current_user_id to app_user;
 grant execute on function app_public.current_user to app_user;
 grant execute on function app_public.send_message to app_user;
+grant execute on function app_public.messages_with to app_user;
 
 grant select, insert on table app_public.messages to app_user;
 
