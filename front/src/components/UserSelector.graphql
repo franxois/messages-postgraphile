@@ -1,0 +1,5 @@
+mutation GetJWT($username: String!) {
+  authenticate(input: { username: $username }) {
+    jwtToken
+  }
+}

@@ -1,0 +1,10 @@
+query messagesWith($id: UUID) {
+  messagesWith(friendId: $id) {
+    nodes {
+      sender
+      title
+      content
+      createdAt
+    }
+  }
+}

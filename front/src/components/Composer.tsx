@@ -1,31 +1,11 @@
-import { useMutation } from "@apollo/client";
 import { Row, Col, Button, Input } from "antd";
-import gql from "graphql-tag";
 import React, { useState } from "react";
-
+import { useSendMessageMutation } from "../generated/graphql";
 import styles from "./Composer.module.css";
 
 export const Composer: React.FC<{ recipient: string }> = ({ recipient }) => {
   const [content, setContent] = useState<string>("");
-
-  const SEND_MESSAGE = gql`
-    mutation SendMessage(
-      $content: String!
-      $recipient: UUID!
-      $title: String!
-    ) {
-      sendMessage(
-        input: { content: $content, recipient: $recipient, title: $title }
-      ) {
-        messages {
-          createdAt
-        }
-      }
-    }
-  `;
-
-  const [sendMessage, { loading }] = useMutation(SEND_MESSAGE);
-
+  const [sendMessage, { loading }] = useSendMessageMutation();
   const { TextArea } = Input;
 
   return (

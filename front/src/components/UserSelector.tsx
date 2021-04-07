@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import { useMutation, gql } from "@apollo/client";
 import { Select } from "antd";
 import { useUser } from "../context/User";
-
-const ALICE_JWT = gql`
-  mutation GetJWT($username: String!) {
-    authenticate(input: { username: $username }) {
-      jwtToken
-    }
-  }
-`;
+import { useGetJwtMutation } from "../generated/graphql";
 
 const { Option, OptGroup } = Select;
 
@@ -17,13 +9,13 @@ export const UserSelector = () => {
   const { dispatch } = useUser();
   const [selectedUser, setSelectedUser] = useState<string>();
 
-  const [getJWT] = useMutation(ALICE_JWT, {
+  const [getJWT] = useGetJwtMutation({
     // TODO : Move this code into redux action ?
     onCompleted: (data) => {
       if (selectedUser !== undefined) {
         dispatch({
           type: "login",
-          payload: { username: selectedUser, jwt: data.authenticate.jwtToken },
+          payload: { username: selectedUser, jwt: data.authenticate?.jwtToken },
         });
       }
     },

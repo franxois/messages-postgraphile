@@ -33,8 +33,10 @@ sudo apt-get install iptables-persistent # doesn't resolve anything
 
 ## TODO
 
-- [ ] migrate db test from pgTap to jest
+- [x] migrate db test from pgTap to jest
 - [ ] do the front part
+  - [x] use vite, react & antd
+  - [x] use graphql-codegen
 
 ## TO READ
 

@@ -1,0 +1,9 @@
+mutation SendMessage($content: String!, $recipient: UUID!, $title: String!) {
+  sendMessage(
+    input: { content: $content, recipient: $recipient, title: $title }
+  ) {
+    messages {
+      createdAt
+    }
+  }
+}
