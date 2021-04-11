@@ -35,8 +35,11 @@ export const UserSelector = () => {
         <Option value="admin">Admin</Option>
       </OptGroup>
       <OptGroup label="Users">
-        <Option value="Alice-test">Alice-test</Option>
-        <Option value="Bob-test">Bob-test</Option>
+        {["Alice-test", "Bob-test", "Charlie-test"].map((c) => (
+          <Option key={c} value={c}>
+            {c}
+          </Option>
+        ))}
       </OptGroup>
     </Select>
   );

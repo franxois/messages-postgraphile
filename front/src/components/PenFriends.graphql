@@ -1,0 +1,10 @@
+query AllPenFriends {
+  allPenFriends {
+    nodes {
+      userByFriendId {
+        username
+        id
+      }
+    }
+  }
+}

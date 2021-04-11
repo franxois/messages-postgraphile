@@ -1,7 +1,14 @@
 .fromMyFriend {
-  background-color: #c0f0da;
+  background-color: var(--maximum-blue-purple);
 }
 
 .fromMe {
-  background-color: #c0e5f0;
+  background-color: var(--light-steel-blue);
+}
+
+.fromMe,
+.fromMyFriend {
+  border-radius: 0.5em;
+  padding: 1em;
+  border: 1px solid var(--charcoal);
 }

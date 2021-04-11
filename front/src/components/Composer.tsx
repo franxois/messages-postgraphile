@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { useSendMessageMutation } from "../generated/graphql";
 import styles from "./Composer.module.css";
 
-export const Composer: React.FC<{ recipient: string }> = ({ recipient }) => {
+export const Composer: React.FC<{
+  recipient: string;
+  afterSend: () => void;
+}> = ({ recipient, afterSend }) => {
   const [content, setContent] = useState<string>("");
   const [sendMessage, { loading }] = useSendMessageMutation();
   const { TextArea } = Input;
@@ -23,8 +26,9 @@ export const Composer: React.FC<{ recipient: string }> = ({ recipient }) => {
           type="primary"
           loading={loading}
           disabled={recipient === ""}
-          onClick={() => {
-            sendMessage({ variables: { content, title: "", recipient } });
+          onClick={async () => {
+            await sendMessage({ variables: { content, title: "", recipient } });
+            afterSend();
           }}
         >
           Send

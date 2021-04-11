@@ -3,8 +3,8 @@ import "./App.css";
 import { Layout, Menu, Avatar, Button } from "antd";
 import { UserSelector } from "./components/UserSelector";
 import { ReceiverChooser } from "./components/ReceiverChooser";
-import { Composer } from "./components/Composer";
 import { Discussions } from "./components/Discussions";
+import { PenFriends } from "./components/PenFriends";
 
 interface State {
   recipient: string;
@@ -23,24 +23,17 @@ function App() {
 
   const [state, dispatch] = useReducer(reducer, { recipient: "" });
 
+  const setRecipient = (id: string) => {
+    dispatch({ type: "SET_RECIPIENT", id });
+  };
+
   return (
     <div className="App">
       <Layout style={{ minHeight: "100vh" }}>
         <Sider theme="light">
           <h1>Conversations</h1>
-          <Menu>
-            <Menu.Item>
-              <Avatar size="small">B</Avatar> Bob
-            </Menu.Item>
-            <Menu.Item>
-              <Avatar size="small">C</Avatar> Charlie
-            </Menu.Item>
-          </Menu>
-          <ReceiverChooser
-            onChange={(id) => {
-              dispatch({ type: "SET_RECIPIENT", id });
-            }}
-          />
+          <PenFriends recipient={state.recipient} setRecipient={setRecipient} />
+          <ReceiverChooser onChange={setRecipient} />
         </Sider>
         <Layout>
           <Header>
@@ -49,7 +42,6 @@ function App() {
           {state.recipient && (
             <Content>
               <Discussions id={state.recipient} />
-              <Composer recipient={state.recipient} />
             </Content>
           )}
         </Layout>

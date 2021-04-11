@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import React from "react";
 import { useMessagesWithQuery } from "../generated/graphql";
+import { Composer } from "./Composer";
 
 import styles from "./Discussions.module.css";
 
@@ -46,7 +47,12 @@ export const Discussions: React.FC<{ id: string }> = ({ id }) => {
             }
           })}
       </Row>
-      {/* <Button onClick={() => refetch()}>Refetch!</Button> */}
+      <Composer
+        recipient={id}
+        afterSend={() => {
+          refetch();
+        }}
+      />
     </div>
   );
 };

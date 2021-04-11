@@ -460,6 +460,56 @@ export type PageInfo = {
   endCursor?: Maybe<Scalars['Cursor']>;
 };
 
+export type PenFriend = {
+  __typename?: 'PenFriend';
+  friendId?: Maybe<Scalars['UUID']>;
+  lastMessageDate?: Maybe<Scalars['Datetime']>;
+  /** Reads a single `User` that is related to this `PenFriend`. */
+  userByFriendId?: Maybe<User>;
+};
+
+/**
+ * A condition to be used against `PenFriend` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type PenFriendCondition = {
+  /** Checks for equality with the object’s `friendId` field. */
+  friendId?: Maybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `lastMessageDate` field. */
+  lastMessageDate?: Maybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `PenFriend` values. */
+export type PenFriendsConnection = {
+  __typename?: 'PenFriendsConnection';
+  /** A list of `PenFriend` objects. */
+  nodes: Array<Maybe<PenFriend>>;
+  /** A list of edges which contains the `PenFriend` and cursor to aid in pagination. */
+  edges: Array<PenFriendsEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `PenFriend` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `PenFriend` edge in the connection. */
+export type PenFriendsEdge = {
+  __typename?: 'PenFriendsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `PenFriend` at the end of the edge. */
+  node?: Maybe<PenFriend>;
+};
+
+/** Methods to use when ordering `PenFriend`. */
+export enum PenFriendsOrderBy {
+  Natural = 'NATURAL',
+  FriendIdAsc = 'FRIEND_ID_ASC',
+  FriendIdDesc = 'FRIEND_ID_DESC',
+  LastMessageDateAsc = 'LAST_MESSAGE_DATE_ASC',
+  LastMessageDateDesc = 'LAST_MESSAGE_DATE_DESC'
+}
+
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
@@ -474,6 +524,8 @@ export type Query = Node & {
   node?: Maybe<Node>;
   /** Reads and enables pagination through a set of `Message`. */
   allMessages?: Maybe<MessagesConnection>;
+  /** Reads and enables pagination through a set of `PenFriend`. */
+  allPenFriends?: Maybe<PenFriendsConnection>;
   /** Reads and enables pagination through a set of `User`. */
   allUsers?: Maybe<UsersConnection>;
   messageById?: Maybe<Message>;
@@ -506,6 +558,18 @@ export type QueryAllMessagesArgs = {
   after?: Maybe<Scalars['Cursor']>;
   orderBy?: Maybe<Array<MessagesOrderBy>>;
   condition?: Maybe<MessageCondition>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAllPenFriendsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<PenFriendsOrderBy>>;
+  condition?: Maybe<PenFriendCondition>;
 };
 
 
@@ -709,6 +773,8 @@ export type User = Node & {
   messagesBySender: MessagesConnection;
   /** Reads and enables pagination through a set of `Message`. */
   messagesByRecipient: MessagesConnection;
+  /** Reads and enables pagination through a set of `PenFriend`. */
+  penFriendsByFriendId: PenFriendsConnection;
 };
 
 
@@ -731,6 +797,17 @@ export type UserMessagesByRecipientArgs = {
   after?: Maybe<Scalars['Cursor']>;
   orderBy?: Maybe<Array<MessagesOrderBy>>;
   condition?: Maybe<MessageCondition>;
+};
+
+
+export type UserPenFriendsByFriendIdArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<PenFriendsOrderBy>>;
+  condition?: Maybe<PenFriendCondition>;
 };
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -828,6 +905,23 @@ export type MessagesWithQuery = (
     & { nodes: Array<Maybe<(
       { __typename?: 'Message' }
       & Pick<Message, 'sender' | 'title' | 'content' | 'createdAt'>
+    )>> }
+  )> }
+);
+
+export type AllPenFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllPenFriendsQuery = (
+  { __typename?: 'Query' }
+  & { allPenFriends?: Maybe<(
+    { __typename?: 'PenFriendsConnection' }
+    & { nodes: Array<Maybe<(
+      { __typename?: 'PenFriend' }
+      & { userByFriendId?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username' | 'id'>
+      )> }
     )>> }
   )> }
 );
@@ -968,6 +1062,11 @@ export type ResolversTypes = {
   Node: ResolversTypes['Message'] | ResolversTypes['Query'] | ResolversTypes['User'];
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  PenFriend: ResolverTypeWrapper<PenFriend>;
+  PenFriendCondition: PenFriendCondition;
+  PenFriendsConnection: ResolverTypeWrapper<PenFriendsConnection>;
+  PenFriendsEdge: ResolverTypeWrapper<PenFriendsEdge>;
+  PenFriendsOrderBy: PenFriendsOrderBy;
   Query: ResolverTypeWrapper<{}>;
   SendMessageInput: SendMessageInput;
   SendMessagePayload: ResolverTypeWrapper<SendMessagePayload>;
@@ -1019,6 +1118,10 @@ export type ResolversParentTypes = {
   Node: ResolversParentTypes['Message'] | ResolversParentTypes['Query'] | ResolversParentTypes['User'];
   PageInfo: PageInfo;
   Boolean: Scalars['Boolean'];
+  PenFriend: PenFriend;
+  PenFriendCondition: PenFriendCondition;
+  PenFriendsConnection: PenFriendsConnection;
+  PenFriendsEdge: PenFriendsEdge;
   Query: {};
   SendMessageInput: SendMessageInput;
   SendMessagePayload: SendMessagePayload;
@@ -1152,11 +1255,33 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PenFriendResolvers<ContextType = any, ParentType extends ResolversParentTypes['PenFriend'] = ResolversParentTypes['PenFriend']> = {
+  friendId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  lastMessageDate?: Resolver<Maybe<ResolversTypes['Datetime']>, ParentType, ContextType>;
+  userByFriendId?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PenFriendsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['PenFriendsConnection'] = ResolversParentTypes['PenFriendsConnection']> = {
+  nodes?: Resolver<Array<Maybe<ResolversTypes['PenFriend']>>, ParentType, ContextType>;
+  edges?: Resolver<Array<ResolversTypes['PenFriendsEdge']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PenFriendsEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['PenFriendsEdge'] = ResolversParentTypes['PenFriendsEdge']> = {
+  cursor?: Resolver<Maybe<ResolversTypes['Cursor']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['PenFriend']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   query?: Resolver<ResolversTypes['Query'], ParentType, ContextType>;
   nodeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   node?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType, RequireFields<QueryNodeArgs, 'nodeId'>>;
   allMessages?: Resolver<Maybe<ResolversTypes['MessagesConnection']>, ParentType, ContextType, RequireFields<QueryAllMessagesArgs, 'orderBy'>>;
+  allPenFriends?: Resolver<Maybe<ResolversTypes['PenFriendsConnection']>, ParentType, ContextType, RequireFields<QueryAllPenFriendsArgs, 'orderBy'>>;
   allUsers?: Resolver<Maybe<ResolversTypes['UsersConnection']>, ParentType, ContextType, RequireFields<QueryAllUsersArgs, 'orderBy'>>;
   messageById?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryMessageByIdArgs, 'id'>>;
   userById?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByIdArgs, 'id'>>;
@@ -1205,6 +1330,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   createdAt?: Resolver<ResolversTypes['Datetime'], ParentType, ContextType>;
   messagesBySender?: Resolver<ResolversTypes['MessagesConnection'], ParentType, ContextType, RequireFields<UserMessagesBySenderArgs, 'orderBy'>>;
   messagesByRecipient?: Resolver<ResolversTypes['MessagesConnection'], ParentType, ContextType, RequireFields<UserMessagesByRecipientArgs, 'orderBy'>>;
+  penFriendsByFriendId?: Resolver<ResolversTypes['PenFriendsConnection'], ParentType, ContextType, RequireFields<UserPenFriendsByFriendIdArgs, 'orderBy'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1237,6 +1363,9 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
+  PenFriend?: PenFriendResolvers<ContextType>;
+  PenFriendsConnection?: PenFriendsConnectionResolvers<ContextType>;
+  PenFriendsEdge?: PenFriendsEdgeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SendMessagePayload?: SendMessagePayloadResolvers<ContextType>;
   UUID?: GraphQLScalarType;
@@ -1332,6 +1461,45 @@ export function useMessagesWithLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type MessagesWithQueryHookResult = ReturnType<typeof useMessagesWithQuery>;
 export type MessagesWithLazyQueryHookResult = ReturnType<typeof useMessagesWithLazyQuery>;
 export type MessagesWithQueryResult = Apollo.QueryResult<MessagesWithQuery, MessagesWithQueryVariables>;
+export const AllPenFriendsDocument = gql`
+    query AllPenFriends {
+  allPenFriends {
+    nodes {
+      userByFriendId {
+        username
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllPenFriendsQuery__
+ *
+ * To run a query within a React component, call `useAllPenFriendsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllPenFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllPenFriendsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllPenFriendsQuery(baseOptions?: Apollo.QueryHookOptions<AllPenFriendsQuery, AllPenFriendsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllPenFriendsQuery, AllPenFriendsQueryVariables>(AllPenFriendsDocument, options);
+      }
+export function useAllPenFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllPenFriendsQuery, AllPenFriendsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllPenFriendsQuery, AllPenFriendsQueryVariables>(AllPenFriendsDocument, options);
+        }
+export type AllPenFriendsQueryHookResult = ReturnType<typeof useAllPenFriendsQuery>;
+export type AllPenFriendsLazyQueryHookResult = ReturnType<typeof useAllPenFriendsLazyQuery>;
+export type AllPenFriendsQueryResult = Apollo.QueryResult<AllPenFriendsQuery, AllPenFriendsQueryVariables>;
 export const AllUsersDocument = gql`
     query AllUsers {
   allUsers {
