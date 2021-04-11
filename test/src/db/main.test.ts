@@ -26,11 +26,9 @@ describe("DB : main", () => {
 
     await client.query("BEGIN");
 
-    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
-
     await client.query(
-      `INSERT into app_public.users ( id, username ) VALUES ( current_setting('jwt.claims.user_id')::uuid, 'Alice'), ( $1::uuid , 'Bob'),( $2::uuid , 'Charlie')`,
-      [BOB_ID, CHARLIE_ID]
+      `INSERT into app_public.users ( id, username ) VALUES ( $1::uuid, 'Alice'), ( $2::uuid , 'Bob'),( $3::uuid , 'Charlie')`,
+      [ALICE_ID, BOB_ID, CHARLIE_ID]
     );
 
     const { rows } = await client.query(
@@ -42,6 +40,7 @@ describe("DB : main", () => {
       expect(u["role"]).toBe("app_user");
     }
 
+    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
     await client.query("SET role app_user");
     await client.query(
       "select * from app_public.send_message( $1 , 'test', 'test content' )",
@@ -70,6 +69,39 @@ describe("DB : main", () => {
 
     await client.query("ROLLBACK");
 
+    client.release();
+  });
+
+  it("should send message and see pen-pal", async () => {
+    const client = await pool.connect();
+    await client.query("BEGIN");
+
+    const {
+      rows,
+    } = await client.query(
+      `INSERT into app_public.users ( id, username ) VALUES ( $1::uuid, 'Alice'), ( $2::uuid , 'Bob'),( $3::uuid , 'Charlie')`,
+      [ALICE_ID, BOB_ID, CHARLIE_ID]
+    );
+
+    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
+    await client.query("SET role app_user");
+
+    await client.query(
+      "select * from app_public.send_message( $1 , 'test', 'test content 1' )",
+      [BOB_ID]
+    );
+
+    try {
+      const { rowCount, rows } = await client.query(
+        "select * from app_public.pen_friend"
+      );
+      expect(rowCount).toEqual(1);
+      expect(rows[0].friend_id).toEqual(BOB_ID);
+    } catch (err) {
+      console.log(err);
+    }
+
+    await client.query("ROLLBACK");
     client.release();
   });
 });
