@@ -76,30 +76,36 @@ describe("DB : main", () => {
     const client = await pool.connect();
     await client.query("BEGIN");
 
-    const {
-      rows,
-    } = await client.query(
+    await client.query(
       `INSERT into app_public.users ( id, username ) VALUES ( $1::uuid, 'Alice'), ( $2::uuid , 'Bob'),( $3::uuid , 'Charlie')`,
       [ALICE_ID, BOB_ID, CHARLIE_ID]
     );
 
-    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
     await client.query("SET role app_user");
 
+    // Alice send message to Bobo
+    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
     await client.query(
       "select * from app_public.send_message( $1 , 'test', 'test content 1' )",
       [BOB_ID]
     );
 
-    try {
-      const { rowCount, rows } = await client.query(
-        "select * from app_public.pen_friend"
-      );
-      expect(rowCount).toEqual(1);
-      expect(rows[0].friend_id).toEqual(BOB_ID);
-    } catch (err) {
-      console.log(err);
-    }
+    // Bob send message to Alice
+    await client.query(`set local jwt.claims.user_id to '${BOB_ID}'`);
+    await client.query(
+      "select * from app_public.send_message( $1 , 'test', 'test content 1' )",
+      [ALICE_ID]
+    );
+
+    // Alice check her pen friend, found Bobo
+    await client.query(`set local jwt.claims.user_id to '${ALICE_ID}'`);
+
+    const { rowCount, rows } = await client.query(
+      "select * from app_public.pen_friend"
+    );
+
+    expect(rowCount).toBe(1);
+    expect(rows[0].friend_id).toBe(BOB_ID);
 
     await client.query("ROLLBACK");
     client.release();

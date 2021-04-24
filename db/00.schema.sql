@@ -103,17 +103,19 @@ grant execute on function app_public.messages_with to app_user;
 
 CREATE VIEW app_public.pen_friend
   AS
-    SELECT * FROM (
-        SELECT sender as friend_id, max(created_at) as last_message_date
-        FROM app_public.messages
-        WHERE recipient = app_public.current_user_id()
-        GROUP BY sender
-      UNION
-        SELECT recipient as friend_id, max(created_at) as last_message_date
-        FROM app_public.messages
-        WHERE sender = app_public.current_user_id()
-        GROUP BY recipient ) as U
-    ORDER BY last_message_date DESC;
+    SELECT friend_id, max(last_message_date) as last_interaction FROM (
+      SELECT * FROM (
+          SELECT sender as friend_id, max(created_at) as last_message_date
+          FROM app_public.messages
+          WHERE recipient = app_public.current_user_id()
+          GROUP BY sender
+        UNION
+          SELECT recipient as friend_id, max(created_at) as last_message_date
+          FROM app_public.messages
+          WHERE sender = app_public.current_user_id()
+          GROUP BY recipient ) as U ) as V
+    GROUP BY friend_id
+    ORDER BY last_interaction DESC;
 
 GRANT SELECT ON app_public.pen_friend TO app_user;
 
