@@ -5,6 +5,8 @@ import { UserSelector } from "./components/UserSelector";
 import { ReceiverChooser } from "./components/ReceiverChooser";
 import { Discussions } from "./components/Discussions";
 import { PenFriends } from "./components/PenFriends";
+import { Footer } from "antd/lib/layout/layout";
+import { Composer } from "./components/Composer";
 
 interface State {
   recipient: string;
@@ -40,9 +42,14 @@ function App() {
             <UserSelector />
           </Header>
           {state.recipient && (
-            <Content>
-              <Discussions id={state.recipient} />
-            </Content>
+            <>
+              <Content>
+                <Discussions id={state.recipient} />
+              </Content>
+              <Footer>
+                <Composer recipient={state.recipient} />
+              </Footer>
+            </>
           )}
         </Layout>
       </Layout>{" "}
