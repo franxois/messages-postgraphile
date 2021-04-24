@@ -24,23 +24,16 @@ export const Discussions: React.FC<{ id: string }> = ({ id }) => {
             if (message) {
               if (message.sender === id) {
                 return (
-                  <Col
-                    span={20}
-                    key={message.createdAt}
-                    className={styles.fromMyFriend}
-                  >
-                    {message.content}
+                  <Col span={20} key={message.createdAt}>
+                    <span className={styles.fromMyFriend}>
+                      {message.content}
+                    </span>
                   </Col>
                 );
               } else {
                 return (
-                  <Col
-                    span={20}
-                    offset={4}
-                    key={message.createdAt}
-                    className={styles.fromMe}
-                  >
-                    {message.content}
+                  <Col span={20} offset={4} key={message.createdAt}>
+                    <span className={styles.fromMe}>{message.content}</span>
                   </Col>
                 );
               }

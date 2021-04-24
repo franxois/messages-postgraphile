@@ -1,9 +1,11 @@
 .fromMyFriend {
   background-color: var(--maximum-blue-purple);
+  text-align: left;
 }
 
 .fromMe {
   background-color: var(--light-steel-blue);
+  text-align: right;
 }
 
 .fromMe,
@@ -11,4 +13,6 @@
   border-radius: 0.5em;
   padding: 1em;
   border: 1px solid var(--charcoal);
+  width: 100%;
+  display: inline-block;
 }

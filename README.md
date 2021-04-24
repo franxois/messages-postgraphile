@@ -38,7 +38,7 @@ sudo apt-get install iptables-persistent # doesn't resolve anything
   - [x] use vite, react & antd
   - [x] use graphql-codegen
   - [ ] use redux to centralize state
-- [ ] replace jwt by server sessions
+- [ ] replace jwt with server sessions
 
 ## TO READ
 
