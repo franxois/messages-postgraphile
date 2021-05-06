@@ -16,6 +16,7 @@ export const Composer: React.FC<{
     <Row justify="space-around" align="middle" className={styles.main}>
       <Col span={20}>
         <TextArea
+          autoFocus
           value={content}
           onChange={({ target }) => setContent(target.value)}
           className={styles.textarea}
@@ -29,6 +30,7 @@ export const Composer: React.FC<{
           disabled={recipient === ""}
           onClick={async () => {
             await sendMessage({ variables: { content, title: "", recipient } });
+            setContent("");
             refetch();
           }}
         >

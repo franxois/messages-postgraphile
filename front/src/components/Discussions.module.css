@@ -1,18 +1,28 @@
-.fromMyFriend {
+.msgDate {
+  text-align: left;
+}
+.msgDate.myMsg {
+  text-align: right;
+}
+
+.msg {
+  border-radius: 0.5em;
+  padding: 1em;
+  border: 1px solid var(--charcoal);
+}
+
+.msg {
   background-color: var(--maximum-blue-purple);
   text-align: left;
 }
 
-.fromMe {
+.msg.myMsg {
   background-color: var(--light-steel-blue);
   text-align: right;
 }
 
-.fromMe,
-.fromMyFriend {
-  border-radius: 0.5em;
-  padding: 1em;
-  border: 1px solid var(--charcoal);
+.msg,
+.msgDate {
   width: 100%;
   display: inline-block;
 }
