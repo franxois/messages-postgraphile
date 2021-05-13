@@ -45,7 +45,11 @@ main.ant-layout-content {
   padding: 1em;
 }
 
-footer {
-  position: sticky;
-  bottom: 0;
+main.history {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+section.main {
+  max-height: 100vh;
 }

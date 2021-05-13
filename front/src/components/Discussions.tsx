@@ -9,7 +9,7 @@ const Message: React.FC<{
   content: string;
   isMyMessage: boolean;
 }> = ({ createdAt, content, isMyMessage }) => (
-  <Col span={20} offset={isMyMessage ? 4 : 0} key={createdAt}>
+  <Col span={20} offset={isMyMessage ? 4 : 0}>
     <span
       className={[styles.msgDate, isMyMessage ? styles.myMsg : undefined].join(
         " "
@@ -32,7 +32,13 @@ export const Discussions: React.FC<{ id: string }> = ({ id }) => {
   if (error) return <div>Error : {error.message}</div>;
 
   return (
-    <Row gutter={[5, 5]}>
+    <Row
+      gutter={[5, 5]}
+      ref={(el) => {
+        el !== null &&
+          el.scrollIntoView({ block: "end", inline: "end", behavior: "auto" });
+      }}
+    >
       {data?.messagesWith?.nodes
         .slice(0)
         .reverse()
@@ -43,6 +49,7 @@ export const Discussions: React.FC<{ id: string }> = ({ id }) => {
                 createdAt={message.createdAt}
                 content={message.content}
                 isMyMessage={message.sender !== id}
+                key={message.createdAt}
               />
             );
           }

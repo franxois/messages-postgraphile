@@ -1,6 +1,6 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import "./App.css";
-import { Layout, Menu, Avatar, Button } from "antd";
+import { Layout } from "antd";
 import { UserSelector } from "./components/UserSelector";
 import { ReceiverChooser } from "./components/ReceiverChooser";
 import { Discussions } from "./components/Discussions";
@@ -37,13 +37,13 @@ function App() {
           <PenFriends recipient={state.recipient} setRecipient={setRecipient} />
           <ReceiverChooser onChange={setRecipient} />
         </Sider>
-        <Layout>
+        <Layout className="main">
           <Header>
             <UserSelector />
           </Header>
           {state.recipient && (
             <>
-              <Content>
+              <Content className="history">
                 <Discussions id={state.recipient} />
               </Content>
               <Footer>
@@ -52,7 +52,7 @@ function App() {
             </>
           )}
         </Layout>
-      </Layout>{" "}
+      </Layout>
     </div>
   );
 }
